@@ -4,8 +4,9 @@
 Production-grade DevOps platform built to demonstrate real-world enterprise capabilities including infrastructure automation, CI/CD pipelines, monitoring, and security.
 
 ## 🚀 Live Demo
-- **Application:** http://15.206.153.3:3000
-- **Monitoring:** http://15.206.153.3:3001
+- **Application:** http://13.127.179.208:3000
+- **Monitoring:** http://13.127.179.208:3001
+
 
 ## 🏗️ Architecture
 GitHub → GitHub Actions → DockerHub → AWS EC2
