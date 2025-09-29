@@ -31,15 +31,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install SSH key
+      - name: Decode and install SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.EC2_SSH_KEY_B64 }}" | base64 --decode > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+
+      - name: Disable host key checking
+        run: |
+          printf "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null\n" >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
 
       - name: Deploy container to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} << 'EOF'
+          ssh ec2-user@${{ secrets.AWS_HOST }} << 'EOF'
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/secure-ship:latest
             docker stop secure-ship || true
             docker rm secure-ship || true
